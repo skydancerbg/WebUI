@@ -1,0 +1,20 @@
+  <launch>
+
+  <include file="$(find freenect_launch)/launch/freenect.launch" />
+
+  <include file="$(find linorobot)/launch/minimal.launch" />
+
+  <node name="rosbridge_websocket" pkg="rosbridge_server" respawn="true" type="rosbridge_websocket">
+    <param name="authenticate" value="false" />
+    <param name="port" value="9090" />
+    <param name="address" value="" />
+  </node>
+
+  <node name="web_video_server" pkg="web_video_server" type="web_video_server">
+    <param name="port" value="8080" />
+  </node>
+  
+  <node name="cpr_mover" pkg="cpr_mover" type="cpr_mover">
+  </node>
+
+  </launch>
