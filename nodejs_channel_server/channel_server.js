@@ -27,6 +27,8 @@ var contentTypeMap = {
 };
 
 var server = http.createServer(function (request, response) {
+    "use strict";
+
     var headers = {
         "Access-Control-Allow-Origin": "*",
         "Cache-Control": "no-cache, no-store",
@@ -53,13 +55,13 @@ var server = http.createServer(function (request, response) {
             response.writeHead(200, headers);
             function keepAlive(resp) {
                 resp.write(":\n");
-                resp.keepAliveTimer = setTimeout(arguments.callee, 30000, resp);
+                resp.keepAliveTimer = setTimeout(keepAlive, 30000, resp);
             }
             keepAlive(response);  // flush headers + keep-alive
 
             var session = sessions[sessionId];
             if (!session)
-                session = sessions[sessionId] = {"users" : {}};
+                session = sessions[sessionId] = { "users": {} };
 
             if (Object.keys(session.users).length > usersInSessionLimit - 1) {
                 console.log("user limit for session reached (" + usersInSessionLimit + ")");
